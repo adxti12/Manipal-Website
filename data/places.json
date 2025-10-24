@@ -1,0 +1,14 @@
+[
+  {
+    "name": "End Point Park",
+    "category": "lake",
+    "description": "A scenic viewpoint offering beautiful sunsets and jogging tracks.",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/aa/End_Point_Manipal.jpg"
+  },
+  {
+    "name": "MIT Cafeteria",
+    "category": "cafe",
+    "description": "A popular hangout spot for students with great food and vibes.",
+    "image": "https://example.com/cafe.jpg"
+  }
+]
