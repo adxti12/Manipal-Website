@@ -1,46 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manipal Restaurants | Where to Go in Manipal</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurants in Manipal</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
   <style>
     body {
-      background-color: #fafafa;
-    }
-
-    .hero {
-      background: url("https://images.unsplash.com/photo-1555992336-03a23cbe6a4e?auto=format&fit=crop&w=1500&q=80") center/cover no-repeat;
-      height: 60vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+      background-color: #f8f9fa;
     }
 
     .restaurant-card img {
-      height: 250px;
+      height: 200px;
       object-fit: cover;
-      transition: transform 0.3s ease;
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
     }
 
-    .restaurant-card:hover img {
-      transform: scale(1.05);
+    .restaurant-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: none;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    .restaurant-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     }
 
     .search-bar {
       max-width: 500px;
       margin: 30px auto;
     }
+
+    footer {
+      background: #212529;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 40px;
+    }
   </style>
 </head>
 
 <body>
-
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container-fluid">
@@ -52,7 +59,6 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
           <li class="nav-item"><a class="nav-link active" href="restaurants.html">Restaurants</a></li>
-          <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
           <li class="nav-item"><a class="nav-link" href="map.html">Map</a></li>
           <li class="nav-item"><a class="nav-link" href="weather.html">Weather</a></li>
           <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
@@ -61,97 +67,114 @@
     </div>
   </nav>
 
-  <!-- Hero Banner -->
-  <div class="hero">
-    <div class="text-center">
-      <h1 class="display-5 fw-bold">Manipal Restaurants</h1>
-      <p class="lead">Fine dining, cafés, and local favorites — find your next meal here!</p>
-    </div>
-  </div>
+  <!-- Header -->
+  <header class="bg-warning text-center text-white py-4">
+    <h1 class="fw-bold">Restaurants in Manipal</h1>
+    <p class="mb-0">Discover local cuisines and must-visit dining spots around town</p>
+  </header>
 
   <!-- Search Bar -->
-  <div class="search-bar">
-    <input type="text" id="searchInput" class="form-control" placeholder="Search restaurants...">
+  <div class="container search-bar">
+    <input type="text" id="searchBar" class="form-control" placeholder="Search restaurants..." />
   </div>
 
   <!-- Restaurant Cards -->
-  <div class="container my-4">
-    <div class="row g-4" id="restaurantGrid">
-      <!-- JS will load cards here -->
+  <div class="container">
+    <div id="restaurant-list" class="row g-4 justify-content-center text-center">
+      Loading restaurants...
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="bg-dark text-white text-center py-3">
+  <footer>
     &copy; 2025 Where to Go in Manipal | Designed by Aditi Arun
   </footer>
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JS Logic -->
   <script>
-    // Dummy restaurant data (your backend friend will replace this later)
-    const restaurants = [
-      {
-        name: "Dollops",
-        image: "https://images.unsplash.com/photo-1555992336-03a23cbe6a4e?auto=format&fit=crop&w=800&q=80",
-        open: "9 AM - 11 PM"
-      },
-      {
-        name: "China Valley",
-        image: "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=800&q=80",
-        open: "12 PM - 10 PM"
-      },
-      {
-        name: "Crumbs",
-        image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=800&q=80",
-        open: "8 AM - 9 PM"
-      },
-      {
-        name: "Basil Café",
-        image: "https://images.unsplash.com/photo-1532635227-445f7aacedc2?auto=format&fit=crop&w=800&q=80",
-        open: "10 AM - 11 PM"
-      },
-      {
-        name: "Dosa Point",
-        image: "https://images.unsplash.com/photo-1572441710534-680b1ee2f6c6?auto=format&fit=crop&w=800&q=80",
-        open: "7 AM - 10 PM"
-      },
-      {
-        name: "Egg Factory",
-        image: "https://images.unsplash.com/photo-1617196034796-73de8be46a6d?auto=format&fit=crop&w=800&q=80",
-        open: "8 AM - 10 PM"
-      }
-    ];
+    const restaurantList = document.getElementById("restaurant-list");
+    const searchBar = document.getElementById("searchBar");
 
-    const grid = document.getElementById("restaurantGrid");
+    const PEXELS_API_KEY = "7Uxzj6VnIYrIULzm1a7vVcOTchsFf52N98n7orq1nYrh1DRGMH4D6a5S";
+    const FALLBACK_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/6/60/Food_Plate.png";
 
-    function displayRestaurants(data) {
-      grid.innerHTML = "";
-      data.forEach(r => {
-        const card = `
-          <div class="col-md-4 col-lg-3">
-            <div class="card restaurant-card shadow-sm">
-              <img src="${r.image}" class="card-img-top" alt="${r.name}">
-              <div class="card-body text-center">
-                <h5 class="fw-bold">${r.name}</h5>
-                <p class="text-muted">${r.open}</p>
+    async function fetchRestaurants() {
+      try {
+        restaurantList.textContent = "Fetching restaurants in Manipal...";
+
+        // Bounding box for Manipal: [south, west, north, east]
+        const bbox = [13.33, 74.74, 13.36, 74.79];
+        const overpassQuery = `
+          [out:json];
+          node["amenity"="restaurant"](${bbox.join(',')});
+          out;
+        `;
+        const overpassUrl = "https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(overpassQuery);
+        const res = await fetch(overpassUrl);
+        const data = await res.json();
+
+        const restaurants = data.elements.filter(r => r.tags && r.tags.name);
+        restaurantList.textContent = "";
+
+        for (const restaurant of restaurants) {
+          const name = restaurant.tags.name;
+          const cuisine = restaurant.tags.cuisine ? restaurant.tags.cuisine : "Restaurant";
+          const address = restaurant.tags["addr:street"] ? restaurant.tags["addr:street"] : "Manipal, Karnataka";
+
+          // Fetch image from Pexels
+          let imageUrl = FALLBACK_IMAGE;
+          try {
+            const photoRes = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(name + " restaurant")}&per_page=1`, {
+              headers: { Authorization: PEXELS_API_KEY }
+            });
+            const photoData = await photoRes.json();
+            if (photoData.photos && photoData.photos.length > 0) {
+              imageUrl = photoData.photos[0].src.medium;
+            }
+          } catch (err) {
+            console.warn("Image fetch failed, using fallback.", err);
+          }
+
+          // Create Bootstrap card
+          const col = document.createElement("div");
+          col.className = "col-md-4 col-lg-3";
+          col.innerHTML = `
+            <div class="card restaurant-card h-100">
+              <img src="${imageUrl}" alt="${name}">
+              <div class="card-body">
+                <h5 class="card-title">${name}</h5>
+                <p class="card-text text-muted mb-1">${cuisine}</p>
+                <p class="card-text"><small>${address}</small></p>
               </div>
             </div>
-          </div>
-        `;
-        grid.innerHTML += card;
-      });
+          `;
+          restaurantList.appendChild(col);
+        }
+
+        if (restaurants.length === 0) {
+          restaurantList.textContent = "No restaurants found within Manipal area.";
+        }
+
+      } catch (error) {
+        console.error(error);
+        restaurantList.textContent = "Error fetching restaurant data.";
+      }
     }
 
-    // Initial load
-    displayRestaurants(restaurants);
-
-    // Search functionality
-    document.getElementById("searchInput").addEventListener("input", function(e) {
-      const value = e.target.value.toLowerCase();
-      const filtered = restaurants.filter(r => r.name.toLowerCase().includes(value));
-      displayRestaurants(filtered);
+    // Search filter
+    searchBar.addEventListener("input", () => {
+      const searchTerm = searchBar.value.toLowerCase();
+      const cards = document.querySelectorAll(".restaurant-card");
+      cards.forEach(card => {
+        const title = card.querySelector(".card-title").textContent.toLowerCase();
+        card.parentElement.style.display = title.includes(searchTerm) ? "block" : "none";
+      });
     });
-  </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    fetchRestaurants();
+  </script>
 </body>
 </html>
