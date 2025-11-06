@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leisure & Events | Discover Manipal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #ffe29f, #ffa99f);
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 2rem 0;
+      color: #222;
+      font-weight: 700;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      background-color: #fff;
+      text-align: center;
+    }
+
+    .search-bar {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    input[type="text"] {
+      width: 60%;
+      padding: 0.8rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #ff7e5f;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🎭 Leisure & Events in Manipal</h1>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search events, clubs or activities...">
+  </div>
+
+  <div class="container">
+    <div class="row" id="eventList">
+      <!-- Event cards will be added here dynamically -->
+    </div>
+  </div>
+
+  <script>
+    const events = [
+      {
+        name: "MIT Cultural Fest - Revels",
+        image: "images/revels.jpg",
+        location: "MIT Grounds",
+        description: "The biggest college fest in Manipal — full of performances, sports, and art."
+      },
+      {
+        name: "MIM Carnival Night",
+        image: "images/mim_carnival.jpg",
+        location: "MIM Campus",
+        description: "A lively event with games, food stalls, and great music."
+      },
+      {
+        name: "Utsav - MIT",
+        image: "images/utsav.jpg",
+        location: "KMC Greens",
+        description: "Annual university-level cultural and talent competition among colleges."
+      },
+      {
+        name: "Manipal Flea Market",
+        image: "images/flea_market.jpg",
+        location: "End Point Road",
+        description: "Pop-up stalls, thrift corners, music, and food in an open-air setup."
+      },
+      {
+        name: "Student Band Night",
+        image: "images/band_night.jpg",
+        location: "Delta Grounds",
+        description: "Live local bands, open mic sessions and chill vibes under the stars."
+      }
+    ];
+
+    const eventList = document.getElementById('eventList');
+    const searchInput = document.getElementById('searchInput');
+
+    function displayEvents(filteredEvents) {
+      eventList.innerHTML = "";
+      filteredEvents.forEach(event => {
+        const card = `
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <img src="${event.image}" class="card-img-top" alt="${event.name}">
+              <div class="card-body">
+                <h5 class="card-title">${event.name}</h5>
+                <p class="card-text"><strong>Location:</strong> ${event.location}</p>
+                <p>${event.description}</p>
+              </div>
+            </div>
+          </div>`;
+        eventList.innerHTML += card;
+      });
+    }
+
+    searchInput.addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase();
+      const filtered = events.filter(event => event.name.toLowerCase().includes(query));
+      displayEvents(filtered);
+    });
+
+    displayEvents(events);
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
