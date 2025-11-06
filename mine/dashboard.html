@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - Discover Manipal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <h2>Welcome Back!</h2>
+    <p>Post your event details below.</p>
+
+    <form id="eventForm">
+      <label>Event Name:</label>
+      <input type="text" id="eventName" required>
+
+      <label>Organization:</label>
+      <input type="text" id="org" required>
+
+      <label>Date:</label>
+      <input type="date" id="date" required>
+
+      <label>Location:</label>
+      <input type="text" id="location" required>
+
+      <button type="submit">Add Event</button>
+    </form>
+
+    <div id="eventList">
+      <h3>Your Events</h3>
+      <ul id="events"></ul>
+    </div>
+  </div>
+
+  <script>
+    const eventForm = document.getElementById("eventForm");
+    const eventList = document.getElementById("events");
+
+    eventForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("eventName").value;
+      const org = document.getElementById("org").value;
+      const date = document.getElementById("date").value;
+      const loc = document.getElementById("location").value;
+
+      const li = document.createElement("li");
+      li.textContent = `${name} by ${org} on ${date} at ${loc}`;
+      eventList.appendChild(li);
+
+      eventForm.reset();
+    });
+  </script>
+</body>
+</html>

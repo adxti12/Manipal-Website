@@ -1,30 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Dashboard - Discover Manipal</title>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #d9cbb6, #a7bfa0);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #2e2e2e;
+      overflow-x: hidden;
+    }
+
+    .dashboard {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 40px;
+      width: 400px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    h2 {
+      text-align: center;
+      font-weight: 600;
+      color: #3d4a3d;
+      margin-bottom: 10px;
+    }
+
+    p {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 14px;
+      color: #5a5a5a;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    label {
+      font-size: 13px;
+      color: #4a4a4a;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid #b6b6b6;
+      border-radius: 10px;
+      outline: none;
+      background-color: #f8f6f2;
+      color: #333;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      transform: scale(1.02);
+      border-color: #8ba989;
+      box-shadow: 0 0 10px rgba(155, 196, 138, 0.4);
+    }
+
+    button {
+      background: #8ba989;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #758d75;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(80, 100, 80, 0.3);
+    }
+
+    #eventList {
+      margin-top: 30px;
+    }
+
+    #eventList h3 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 18px;
+      color: #3d4a3d;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f8f6f2;
+      border-left: 4px solid #8ba989;
+      margin-bottom: 8px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: transform 0.2s ease, background 0.2s;
+    }
+
+    li:hover {
+      transform: translateY(-3px);
+      background: #f0ede8;
+    }
+
+    /* Decorative background elements */
+    .leaf {
+      position: absolute;
+      opacity: 0.08;
+      background: radial-gradient(circle at center, #4b644a 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 10s infinite ease-in-out alternate;
+    }
+
+    .leaf1 { width: 250px; height: 250px; top: 10%; left: 8%; animation-delay: 0s; }
+    .leaf2 { width: 300px; height: 300px; bottom: 8%; right: 10%; animation-delay: 2s; }
+
+    @keyframes float {
+      from { transform: translateY(0); }
+      to { transform: translateY(-40px); }
+    }
+  </style>
 </head>
 <body>
+  <div class="leaf leaf1"></div>
+  <div class="leaf leaf2"></div>
+
   <div class="dashboard">
     <h2>Welcome Back!</h2>
-    <p>Post your event details below.</p>
+    <p>🍃 Share your upcoming Manipal events below 🌾</p>
 
     <form id="eventForm">
       <label>Event Name:</label>
-      <input type="text" id="eventName" required>
+      <input type="text" id="eventName" placeholder="Plantation Drive" required>
 
       <label>Organization:</label>
-      <input type="text" id="org" required>
+      <input type="text" id="org" placeholder="Eco Club Manipal" required>
 
       <label>Date:</label>
       <input type="date" id="date" required>
 
       <label>Location:</label>
-      <input type="text" id="location" required>
+      <input type="text" id="location" placeholder="MIT Campus Lawn" required>
+      
+      <label>Description (for Leisure Page):</label>
+      <input type="text" id="description" placeholder="Brief event description (optional)">
 
-      <button type="submit">Add Event</button>
+      <button type="submit">+ Add Event</button>
     </form>
 
     <div id="eventList">
@@ -37,19 +181,47 @@
     const eventForm = document.getElementById("eventForm");
     const eventList = document.getElementById("events");
 
+    function loadAndDisplayEvents() {
+        eventList.innerHTML = "";
+        const events = JSON.parse(localStorage.getItem('userEvents')) || [];
+        events.forEach(event => {
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>${event.name}</strong><br>${event.org} | ${event.date} 📍 ${event.loc}`;
+            eventList.appendChild(li);
+        });
+    }
+
     eventForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const name = document.getElementById("eventName").value;
       const org = document.getElementById("org").value;
       const date = document.getElementById("date").value;
       const loc = document.getElementById("location").value;
+      const description = document.getElementById("description").value || `An exciting event hosted by ${org}!`;
 
-      const li = document.createElement("li");
-      li.textContent = `${name} by ${org} on ${date} at ${loc}`;
-      eventList.appendChild(li);
+      const currentEvents = JSON.parse(localStorage.getItem('userEvents')) || [];
+      
+      // Fixed dummy coordinates for user events on the map
+      const newEvent = {
+          name: name,
+          org: org,
+          date: date,
+          loc: loc,
+          description: description,
+          lat: 13.350, 
+          lon: 74.795,
+          image: "https://images.unsplash.com/photo-1531331045316-83eb3e36ff74?auto=format&fit=crop&w=800&q=80" // Placeholder image for card
+      };
 
+      currentEvents.push(newEvent);
+
+      localStorage.setItem('userEvents', JSON.stringify(currentEvents));
+      
+      loadAndDisplayEvents();
       eventForm.reset();
     });
+    
+    loadAndDisplayEvents();
   </script>
 </body>
 </html>
