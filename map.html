@@ -44,18 +44,20 @@
     }
 
     @keyframes pulse {
-      0% {
-        transform: scale(0.9);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(2.5);
-        opacity: 0;
-      }
+      0% { transform: scale(0.9); opacity: 1; }
+      100% { transform: scale(2.5); opacity: 0; }
     }
 
     .leaflet-popup-content-wrapper {
       border-radius: 12px;
+    }
+
+    .popup-image {
+      width: 100%;
+      max-width: 200px;
+      display: block;
+      margin-bottom: 5px;
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -93,7 +95,7 @@
       zoomControl: false
     }).setView([13.352, 74.792], 14); // Center on Manipal
 
-    // Add a styled map (from CartoDB or Mapbox-style)
+    // Add a styled map (CartoDB dark)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; OpenStreetMap contributors &copy; CartoDB',
       subdomains: 'abcd',
@@ -103,39 +105,88 @@
     // Add a zoom control at bottom right
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    // Create a pulsing marker for user's current location
+    // Pulsing marker icon for user's current location
     const pulseIcon = L.divIcon({
       className: 'pulse',
       iconSize: [20, 20]
     });
 
-    // Example location (End Point)
+    // Example static markers
     const endpoint = [13.359, 74.791];
     L.marker(endpoint).addTo(map)
       .bindPopup("<b>End Point Park</b><br>Beautiful sunset view & open fields.");
 
-    // Another marker (Marena)
     const marena = [13.3475, 74.7875];
     L.marker(marena).addTo(map)
       .bindPopup("<b>Marena Sports Complex</b><br>Indoor fitness & sports arena.");
 
-    // Cafes
-    const cafes = [
-      { name: "Dollops", lat: 13.352, lon: 74.788 },
-      { name: "Egg Factory", lat: 13.353, lon: 74.787 },
-      { name: "Crave", lat: 13.3535, lon: 74.789 }
+    // Default events with lat/lon
+    const defaultEvents = [
+      {
+        name: "MIT Cultural Fest - Revels",
+        image: "images/revels.jpg",
+        loc: "MIT Grounds",
+        description: "The biggest college fest in Manipal — full of performances, sports, and art.",
+        org: "MIT",
+        date: "2025-03-01",
+        lat: 13.3585, lon: 74.7912
+      },
+      {
+        name: "MIM Carnival Night",
+        image: "images/mim_carnival.jpg",
+        loc: "MIM Campus",
+        description: "A lively event with games, food stalls, and great music.",
+        org: "MIM",
+        date: "2025-05-15",
+        lat: 13.3505, lon: 74.7930
+      },
+      {
+        name: "Utsav - MIT",
+        image: "images/utsav.jpg",
+        loc: "KMC Greens",
+        description: "Annual university-level cultural and talent competition among colleges.",
+        org: "MIT",
+        date: "2025-04-10",
+        lat: 13.3560, lon: 74.7905
+      },
+      {
+        name: "Manipal Flea Market",
+        image: "images/flea_market.jpg",
+        loc: "End Point Road",
+        description: "Pop-up stalls, thrift corners, music, and food in an open-air setup.",
+        org: "Local Community",
+        date: "2025-02-20",
+        lat: 13.3590, lon: 74.7910
+      },
+      {
+        name: "Student Band Night",
+        image: "images/band_night.jpg",
+        loc: "Delta Grounds",
+        description: "Live local bands, open mic sessions and chill vibes under the stars.",
+        org: "Music Club",
+        date: "2025-01-30",
+        lat: 13.3535, lon: 74.7885
+      }
     ];
 
-    cafes.forEach(cafe => {
-      const marker = L.marker([cafe.lat, cafe.lon]).addTo(map);
-      marker.bindPopup(`<b>${cafe.name}</b><br>Popular student cafe in Manipal.`);
+    // Add event markers
+    defaultEvents.forEach(event => {
+      const marker = L.marker([event.lat, event.lon]).addTo(map);
+      const popupContent = `
+        <img src="${event.image}" class="popup-image" alt="${event.name}">
+        <b>${event.name}</b><br>
+        <i>${event.loc}</i><br>
+        ${event.description}<br>
+        <small>${event.date}</small>
+      `;
+      marker.bindPopup(popupContent);
     });
 
     // Animate fly-in when map loads
     setTimeout(() => {
       map.flyTo([13.354, 74.789], 15, {
         animate: true,
-        duration: 3 // seconds
+        duration: 3
       });
     }, 1000);
 
